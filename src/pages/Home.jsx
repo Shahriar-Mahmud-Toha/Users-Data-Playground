@@ -1,11 +1,12 @@
-import Footer from "../components/footer";
-import Header from "../components/header";
+import AddOrUpdateForm from "../components/AddOrUpdateForm";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 const Home = () => {
     return (
         <div>
             <Header />
-            Main Content
+            <AddOrUpdateForm/>
             <Footer />
         </div>
     );

@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes: dark --default;
+}
+@layer components{
+    .c-container{
+        @apply container mx-auto px-2
+    }
+    .dev{
+        @apply border-2 border-red-500
+    }
+}
+body{
+    min-width: 295px;
+}
