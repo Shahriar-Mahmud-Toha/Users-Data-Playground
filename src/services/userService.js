@@ -1,20 +1,42 @@
 import axios from "axios";
+import { sleep } from "../utils/helpers";
 
 const API_URL = "https://dummyjson.com/users";
 
 export const getUsers = async () => {
-    const response = await axios.get(API_URL);
-    return response.data.users;
+    try {
+        const response = await axios.get(API_URL);
+        // await sleep(5000);
+        return response.data.users;
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return [];
+    }
 };
 
 export const addUser = async (user) => {
-    return await axios.post(`${API_URL}/add`, user);
+    try {
+        return await axios.post(`${API_URL}/add`, user);
+    } catch (error) {
+        console.error("Error adding users:", error);
+        return [];
+    }
 };
 
 export const updateUser = async (id, user) => {
-    return await axios.patch(`${API_URL}/${id}`, user);
+    try {
+        return await axios.patch(`${API_URL}/${id}`, user);
+    } catch (error) {
+        console.error("Error updating users:", error);
+        return [];
+    }
 };
 
 export const deleteUser = async (id) => {
-    return await axios.delete(`${API_URL}/${id}`);
+    try {
+        return await axios.delete(`${API_URL}/${id}`);
+    } catch (error) {
+        console.error("Error deleting users:", error);
+        return [];
+    }
 };

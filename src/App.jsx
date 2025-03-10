@@ -1,14 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Home from "./pages/Home"
-import Dashboard from "./pages/Dashboard"
-import NotFound from './pages/NotFound';
-import AppRoutes from "./routes";
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
+import UserContextProvider from "./context/UserContextProvider";
 
 function App() {
   return (
-    <>
-      <AppRoutes />
-    </>
+    <BrowserRouter>
+      <UserContextProvider>
+        <AppRoutes />
+      </UserContextProvider>
+    </BrowserRouter>
   )
 }
 

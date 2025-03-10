@@ -1,30 +1,36 @@
-import { useState, useEffect, useRef } from "react";
-import { INITIAL_USER_FORM_STATE } from "../../utils/constants";
+import { useEffect, useContext } from "react";
 import { getUsers } from "../../services/userService";
 import UsersTable from "./UsersTable";
 import UserForm from "./UserForm";
+import Loader from './../common/Loader';
+import UserContext from "../../context/UserContext";
+import UserFormContextProvider from "../../context/UserFormContextProvider";
 
 const UserManagement = () => {
 
-    const [formData, setFormData] = useState(INITIAL_USER_FORM_STATE);
-    const [users, setUsers] = useState([]);
-    const [editingUserId, setEditingUserId] = useState(null);
-    const availableUserId = useRef(31);
+    const { setUsers, setLoading } = useContext(UserContext);
 
     useEffect(() => {
         getUsers()
             .then(data => {
                 setUsers(data);
+                setLoading(false);
             })
-            .catch(error => console.error("Error fetching users:", error));
+            .catch(error => {
+                console.error("Error fetching users:", error);
+                setLoading(false);
+            });
     }, []);
 
     return (
         <div className="c-container">
-            <div className="mb-10">
-                <UserForm formData={formData} setFormData={setFormData} users={users} setUsers={setUsers} editingUserId={editingUserId} setEditingUserId={setEditingUserId} availableUserId={availableUserId} />
-            </div>
-            <UsersTable users={users} setUsers={setUsers} setFormData={setFormData} setEditingUserId={setEditingUserId} />
+            <UserFormContextProvider>
+                <div className="mb-10">
+                    <UserForm />
+                </div>
+                <Loader />
+                <UsersTable />
+            </UserFormContextProvider>
         </div>
     );
 };

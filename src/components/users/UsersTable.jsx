@@ -1,7 +1,12 @@
+import { useContext } from 'react';
 import { formatDate } from './../../utils/helpers';
-import { handleDeleteUser, handleEditUser } from './userFormHandler';
+import UserContext from '../../context/UserContext';
+import useUserForm from '../../hooks/useUserForm';
 
-const UsersTable = ({ users, setUsers, setFormData, setEditingUserId }) => {
+
+const UsersTable = () => {
+    const { users } = useContext(UserContext);
+    const { handleDeleteUser, handleEditUser } = useUserForm();
     return (
         <div className="mx-auto overflow-x-auto">
             <table className="table">
@@ -24,8 +29,8 @@ const UsersTable = ({ users, setUsers, setFormData, setEditingUserId }) => {
                             <td>{user.gender}</td>
                             <td>{formatDate(user.birthDate)}</td>
                             <td>
-                                <button className="btn text-accent mr-2" onClick={() => { handleEditUser(user, setFormData, setEditingUserId) }}>Edit</button>
-                                <button className="btn text-red-400" onClick={() => { handleDeleteUser(user.id, setUsers, users) }}>Delete</button>
+                                <button className="btn text-accent mr-2" onClick={() => { handleEditUser(user) }}>Edit</button>
+                                <button className="btn text-red-400" onClick={() => { handleDeleteUser(user.id) }}>Delete</button>
                             </td>
                         </tr>
                     ))}
