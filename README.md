@@ -1,4 +1,4 @@
-# React User Management App
+# Users Data Playground
 
 A simple React-based web application that allows users to interact with publicly available user data from a mock REST API. Users can:
 
