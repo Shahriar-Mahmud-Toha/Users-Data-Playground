@@ -6,7 +6,7 @@ A simple React-based web application that allows users to interact with publicly
 - Add new users
 - Simulate updating and deleting user records (temporary; data is restored after a page reload)
 
-This project is hosted online. You can access it here: **[Live Demo](#)**
+This project is hosted online. You can access it here: **[Live Demo](https://users-data-playground.vercel.app/)**
 
 ---
 
