@@ -6,20 +6,26 @@ import FormInput from "../common/FormInput";
 const UserForm = () => {
     const { formData, editingUserId, handleInputChange, handleFormSubmit } = useUserForm();
     return (
-        <form className="bg-base-100 flex flex-col w-fit mx-auto" onSubmit={(e) => { handleFormSubmit(e) }} >
-            <FormInput type="text" name="firstName" placeholder="First Name" value={formData.firstName} onChange={(e) => { handleInputChange(e) }} required={true} />
-            <FormInput type="text" name="lastName" placeholder="Last Name" value={formData.lastName} onChange={(e) => { handleInputChange(e) }} />
-            <FormInput type="select" label="Select City" name="city" value={formData.address.city} onChange={(e) => { handleInputChange(e) }} options={CITIES} />
-            <FormInput type="radio" label="Gender" name="gender" value={formData.gender} onChange={(e) => { handleInputChange(e) }} options={['male', 'female']} />
-            <FormInput type="date" label="Date of Birth" name="birthDate" value={formatDate(formData.birthDate)} onChange={(e) => { handleInputChange(e) }} />
-            <FormInput type="text" placeholder="Email" name="email" value={formData.email} onChange={(e) => { handleInputChange(e) }} />
-            <FormInput type="text" placeholder="Phone" name="phone" value={formData.phone} onChange={(e) => { handleInputChange(e) }} />
-            <FormInput type="text" placeholder="Eye Color" name="eyeColor" value={formData.eyeColor} onChange={(e) => { handleInputChange(e) }} />
+        <form className="bg-base-100 mx-auto w-fit p-5 rounded-lg shadow-md" onSubmit={(e) => handleFormSubmit(e)}>
+            <div className="grid grid-cols-2 gap-3">
+                <FormInput type="text" label="First Name" name="firstName" placeholder="Enter your first name" value={formData.firstName} onChange={handleInputChange} required />
+                <FormInput type="text" label="Last Name" name="lastName" placeholder="Enter your last Name" value={formData.lastName} onChange={handleInputChange} />
 
-            <button type="submit" className="mt-5 btn btn-active btn-primary">
+                <FormInput type="text" label="Email" placeholder="Enter your email" name="email" value={formData.email} onChange={handleInputChange} />
+                <FormInput type="text" label="Phone" placeholder="Enter your phone" name="phone" value={formData.phone} onChange={handleInputChange} />
+                
+                <FormInput type="radio" label="Gender" name="gender" value={formData.gender} onChange={handleInputChange} options={['male', 'female']} />
+                <FormInput type="text" label="Eye Color" placeholder="Enter your eye color" name="eyeColor" value={formData.eyeColor} onChange={handleInputChange} />
+
+                <FormInput type="select" label="City" name="city" value={formData.address.city} onChange={handleInputChange} options={CITIES} />
+                <FormInput type="date" label="Birth Date" name="birthDate" value={formatDate(formData.birthDate)} onChange={handleInputChange} />
+            </div>
+
+            <button type="submit" className="mt-4 w-full btn btn-primary">
                 {editingUserId ? "Update" : "Add"}
             </button>
         </form>
+
     );
 };
 

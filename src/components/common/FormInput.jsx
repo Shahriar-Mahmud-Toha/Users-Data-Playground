@@ -4,25 +4,35 @@ const FormInput = ({ type, name, value, onChange, placeholder = "", label = "", 
     switch (type) {
         case 'select':
             return (
-                <label className="input">
-                    {label && <span className="label">{label}</span>}
-                    <select className="select" id={name} onChange={onChange} name={name} value={value} required={required}>
+                <div className="mb-5">
+                    {label && <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</label>}
+                    <select
+                        className="bg-gray-50 border-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent focus:border-accent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent outline-none"
+                        id={name}
+                        onChange={onChange}
+                        name={name}
+                        value={value}
+                        required={required}
+                    >
                         <option value="">---Select---</option>
                         {options.map((option, index) => (
                             <option key={index} value={option}>{option}</option>
                         ))}
                     </select>
-                </label>
+                </div>
             );
         case 'radio':
             return (
-                <label className="input">
-                    {label && <span className="label">{label}</span>}
+                <div className="mb-5">
+                    {label && <span className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</span>}
                     {options.map((option, index) => (
-                        <React.Fragment key={index}>
+                        <div key={index} className="flex items-center mb-2">
                             <input
                                 type="radio"
-                                className="radio radio-primary"
+                                className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 outline-none 
+               dark:bg-gray-700 dark:border-gray-600 
+               dark:focus:ring-accent dark:focus:border-accent dark:ring-offset-gray-800 
+               dark:focus:ring-offset-gray-800 checked:accent-accent"
                                 name={name}
                                 id={option}
                                 value={option}
@@ -30,32 +40,40 @@ const FormInput = ({ type, name, value, onChange, placeholder = "", label = "", 
                                 checked={value === option}
                                 required={required}
                             />
-                            <label htmlFor={option}>{option}</label>
-                        </React.Fragment>
+
+                            <label htmlFor={option} className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{option}</label>
+                        </div>
                     ))}
-                </label>
+                </div>
             );
         case 'date':
             return (
-                <label className="input">
-                    {label && <span className="label">{label}</span>}
-                    <input type="date" onChange={onChange} name={name} value={value} required={required} />
-                </label>
+                <div className="mb-5">
+                    {label && <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</label>}
+                    <input
+                        type="date"
+                        onChange={onChange}
+                        name={name}
+                        value={value}
+                        required={required}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent focus:border-accent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent outline-none border-2"
+                    />
+                </div>
             );
         default:
             return (
-                <label className="input">
-                    {label && <span className="label">{label}</span>}
+                <div className="mb-5">
+                    {label && <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</label>}
                     <input
                         type={type}
-                        className="input"
+                        className="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent focus:border-accent outline-none border-2 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-accent dark:focus:border-accent"
                         placeholder={placeholder}
                         onChange={onChange}
                         name={name}
                         value={value}
                         required={required}
                     />
-                </label>
+                </div>
             );
     }
 };
