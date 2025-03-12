@@ -8,16 +8,19 @@ import UserFormContextProvider from "../../context/UserFormContextProvider";
 
 const UserManagement = () => {
 
-    const { setUsers, setLoading } = useContext(UserContext);
+    const { users, setUsers, setLoading } = useContext(UserContext);
 
     useEffect(() => {
+        if (users && users.length > 0) return;
+
         getUsers()
             .then(data => {
                 setUsers(data);
-                setLoading(false);
             })
             .catch(error => {
                 console.error("Error fetching users:", error);
+            })
+            .finally(() => {
                 setLoading(false);
             });
     }, []);

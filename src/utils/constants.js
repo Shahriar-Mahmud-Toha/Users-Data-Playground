@@ -8,3 +8,4 @@ export const INITIAL_USER_FORM_STATE = {
     gender: "", birthDate: "", email: "",
     phone: "", eyeColor: ""
 }
+export const GENDER_COLORS = ["#3498db", "#e74c3c"]; //Male, Female

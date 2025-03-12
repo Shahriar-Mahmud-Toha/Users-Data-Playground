@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { formatDate } from './../../utils/helpers';
 import UserContext from '../../context/UserContext';
 import useUserForm from '../../hooks/useUserForm';
+import UsersModal from './UsersModal';
 
 
 const UsersTable = () => {
@@ -29,8 +30,11 @@ const UsersTable = () => {
                             <td>{user.gender}</td>
                             <td>{formatDate(user.birthDate)}</td>
                             <td>
-                                <button className="btn text-accent mr-2" onClick={() => { handleEditUser(user) }}>Edit</button>
-                                <button className="btn text-red-400" onClick={() => { handleDeleteUser(user.id) }}>Delete</button>
+                                <div className='flex'>
+                                    <div className='mr-2'><UsersModal id={index} user={user} /></div>
+                                    <button className="btn text-accent mr-2" onClick={() => { handleEditUser(user) }}>Edit</button>
+                                    <button className="btn text-red-400" onClick={() => { handleDeleteUser(user.id) }}>Delete</button>
+                                </div>
                             </td>
                         </tr>
                     ))}
