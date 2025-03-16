@@ -5,6 +5,8 @@ import UserForm from "./UserForm";
 import Loader from './../common/Loader';
 import UserContext from "../../context/UserContext";
 import UserFormContextProvider from "../../context/UserFormContextProvider";
+import SearchInput from './../common/SearchInput';
+import UserSearchContextProvider from "../../context/UserSearchContextProvider";
 
 const UserManagement = () => {
 
@@ -31,8 +33,13 @@ const UserManagement = () => {
                 <div className="mb-10">
                     <UserForm />
                 </div>
-                <Loader />
-                <UsersTable />
+                <UserSearchContextProvider>
+                    <div className="mb-10 flex justify-center">
+                        <SearchInput />
+                    </div>
+                    <Loader />
+                    <UsersTable />
+                </UserSearchContextProvider>
             </UserFormContextProvider>
         </div>
     );

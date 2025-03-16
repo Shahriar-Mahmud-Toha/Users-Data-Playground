@@ -3,11 +3,26 @@ import { formatDate } from './../../utils/helpers';
 import UserContext from '../../context/UserContext';
 import useUserForm from '../../hooks/useUserForm';
 import UsersModal from './UsersModal';
-
+import UserSearchContext from '../../context/UserSearchContext';
 
 const UsersTable = () => {
     const { users } = useContext(UserContext);
+    const { search } = useContext(UserSearchContext);
     const { handleDeleteUser, handleEditUser } = useUserForm();
+    
+    const filterUsers = () => {
+        return users.filter(user => {
+            return Object.values(user).some(value => {
+                if (typeof value === "object" && value !== null) {
+                    return Object.values(value).some(nestedValue =>
+                        String(nestedValue).toLowerCase().includes(search.toLowerCase())
+                    );
+                }
+                return String(value).toLowerCase().includes(search.toLowerCase());
+            });
+        });
+    };
+
     return (
         <div className="mx-auto overflow-x-auto">
             <table className="table">
@@ -22,7 +37,7 @@ const UsersTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
+                    {filterUsers().map((user, index) => (
                         <tr key={index}>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
