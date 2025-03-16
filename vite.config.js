@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base:process.env.VITE_BASE_PATH || '/Users-Data-Playground',
+  base:process.env.VITE_BASE_PATH || '/',
 })
