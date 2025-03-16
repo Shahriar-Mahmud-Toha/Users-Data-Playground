@@ -1,55 +1,62 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { INITIAL_USER_FORM_STATE } from "../utils/constants";
 import UserContext from "./UserContext";
-import { addUser, deleteUser, updateUser } from "../services/userService";
+import { addUser, deleteUser, extractFormData, updateUser } from "../services/userService";
 import UserFormContext from "./UserFormContext";
 import userFormValidator from "../utils/userFormValidator";
 
 const UserFormContextProvider = ({ children }) => {
-    const [formData, setFormData] = useState(INITIAL_USER_FORM_STATE);
-    const [editingUserId, setEditingUserId] = useState(null);
+    const formData = useRef(INITIAL_USER_FORM_STATE);
+    const formRef = useRef(null);
     const availableUserId = useRef(31);
+    const [editingUserId, setEditingUserId] = useState(null);
     const { users, setUsers } = useContext(UserContext);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
-        setFormData((existingData) => {
-            if (name === "city") {
-                return {
-                    ...existingData,
-                    address: { ...existingData.address, city: value },
-                    id: availableUserId.current
-                };
-            }
-            return { ...existingData, [name]: value, id: availableUserId.current };
-        });
+        if (name === "city") {
+            formData.current = {
+                ...formData.current,
+                address: { ...formData.current.address, city: value },
+                id: availableUserId.current
+            };
+        }
+        else {
+            formData.current = {
+                ...formData.current,
+                [name]: value,
+                id: availableUserId.current
+            };
+        }
     };
 
     const resetForm = () => {
-        setFormData(INITIAL_USER_FORM_STATE);
+        formRef.current.reset();
+        formData.current = INITIAL_USER_FORM_STATE;
     };
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
-            const validationError = userFormValidator(formData);
+            const validationError = userFormValidator(formData.current);
             if (validationError !== null) {
                 alert(validationError);
                 return;
             }
+
+            const formObj = await extractFormData(formData.current);
             if (editingUserId) {
                 if (editingUserId <= 30) { // Development mode
-                    const response = await updateUser(editingUserId, formData);
+                    const response = await updateUser(editingUserId, formObj);
                     setUsers(users.map(user => user.id === editingUserId ? response.data : user));
                 } else {
-                    setUsers(users.map(user => user.id === editingUserId ? formData : user));
+                    setUsers(users.map(user => user.id === editingUserId ? formData.current : user));
                 }
                 setEditingUserId(null);
             } else {
-                const response = await addUser(formData);
+                const response = await addUser(formObj);
                 // setUsers([...users, response.data]); // Production mode
-                setUsers([...users, formData]); // Development mode
+                setUsers([...users, formObj]); // Development mode
                 availableUserId.current++;
             }
             resetForm();
@@ -69,10 +76,12 @@ const UserFormContextProvider = ({ children }) => {
         }
     };
 
-    const handleEditUser = async (user) => {
+    const handleEditUser = (user) => {
         try {
-            setFormData(user);
+            resetForm();
+            formData.current = user;
             setEditingUserId(user.id);
+            formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (error) {
             console.error("Error while filling user data:", error);
         }
@@ -82,7 +91,7 @@ const UserFormContextProvider = ({ children }) => {
         <UserFormContext.Provider
             value={{
                 formData,
-                setFormData,
+                formRef,
                 editingUserId,
                 setEditingUserId,
                 handleInputChange,

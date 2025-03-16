@@ -40,3 +40,21 @@ export const deleteUser = async (id) => {
         return [];
     }
 };
+
+export const extractFormData = (formObj) => {
+    if (!formObj) return { ...INITIAL_USER_FORM_STATE };
+
+    return {
+        id: formObj.id || "",
+        firstName: formObj.firstName || "",
+        lastName: formObj.lastName || "",
+        address: {
+            city: formObj.address?.city || "",
+        },
+        gender: formObj.gender || "",
+        birthDate: formObj.birthDate || "",
+        email: formObj.email || "",
+        phone: formObj.phone || "",
+        eyeColor: formObj.eyeColor || ""
+    };
+};
