@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useUserForm from "../../hooks/useUserForm";
 import { CITIES } from "../../utils/constants";
 import { formatDate } from "../../utils/helpers";
@@ -5,8 +6,22 @@ import FormInput from "../common/FormInput";
 
 const UserForm = () => {
     const { formData, formRef, editingUserId, handleInputChange, handleFormSubmit } = useUserForm();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+
+        try {
+            await handleFormSubmit(e);
+        } catch (error) {
+            console.error("Form submission failed:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
     return (
-        <form ref={formRef} className="bg-base-100 mx-auto w-fit p-5 rounded-lg shadow-md" onSubmit={(e) => handleFormSubmit(e)}>
+        <form ref={formRef} className="bg-base-100 mx-auto w-fit p-5 rounded-lg shadow-md" onSubmit={onSubmit}>
             <div className="grid grid-cols-2 gap-3">
                 <FormInput type="text" ref={formData} label="First Name" name="firstName" value={formData.current.firstName} placeholder="Enter your first name" onChange={handleInputChange} required />
                 <FormInput type="text" ref={formData} label="Last Name" name="lastName" value={formData.current.lastName} placeholder="Enter your last Name" onChange={handleInputChange} />
@@ -21,8 +36,8 @@ const UserForm = () => {
                 <FormInput type="date" ref={formData} label="Birth Date" name="birthDate" value={formatDate(formData.current.birthDate)} onChange={handleInputChange} />
             </div>
 
-            <button type="submit" className="mt-4 w-full btn btn-primary">
-                {editingUserId ? "Update" : "Add"}
+            <button type="submit" className="mt-4 w-full btn btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? (editingUserId ? "Updating..." : "Adding...") : editingUserId ? "Update" : "Add"}
             </button>
         </form>
 

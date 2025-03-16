@@ -1,27 +1,29 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { formatDate } from './../../utils/helpers';
 import UserContext from '../../context/UserContext';
 import useUserForm from '../../hooks/useUserForm';
 import UsersModal from './UsersModal';
 import UserSearchContext from '../../context/UserSearchContext';
+import useDebounce from '../../hooks/useDebounce';
 
 const UsersTable = () => {
     const { users } = useContext(UserContext);
     const { search } = useContext(UserSearchContext);
+    const debouncedSearch = useDebounce(search, 500);
     const { handleDeleteUser, handleEditUser } = useUserForm();
     
-    const filterUsers = () => {
+    const filterUsers = useMemo(() => {
         return users.filter(user => {
             return Object.values(user).some(value => {
                 if (typeof value === "object" && value !== null) {
                     return Object.values(value).some(nestedValue =>
-                        String(nestedValue).toLowerCase().includes(search.toLowerCase())
+                        String(nestedValue).toLowerCase().includes(debouncedSearch.toLowerCase())
                     );
                 }
-                return String(value).toLowerCase().includes(search.toLowerCase());
+                return String(value).toLowerCase().includes(debouncedSearch.toLowerCase());
             });
         });
-    };
+    }, [users, debouncedSearch]);
 
     return (
         <div className="mx-auto overflow-x-auto">
@@ -37,7 +39,7 @@ const UsersTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filterUsers().map((user, index) => (
+                    {filterUsers.map((user, index) => (
                         <tr key={index}>
                             <td>{user.firstName}</td>
                             <td>{user.lastName}</td>
